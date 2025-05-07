@@ -7,10 +7,43 @@
    <body>
       {% block mainblock %}
       <form method="post">
-        {% block concretefoundation %}{% endblock %}
+         <!-- Could add a tab menu here to show the various jobs -->
+        {% block concretefoundation %}
+        <h3>Concrete Foundation</h1>
+         <button onclick="addconcretefoundation()" type="button">Add Concrete Foundation</button><br><br>
+         <div id="foundationconcrete"> {% include 'foundation.html' with context %} </div>
+         {% endblock %}
+
         <br><input type="submit">
       </form>
       {% endblock %}
 
    </body>
+   <!-- Should add this script to a js file for future reasons-->
+   <script>
+      let concreteFoundationCount = 1;
+      function addconcretefoundation()
+      {
+         concreteFoundationCount++;
+         fetch(`/concretefoundation?concretefoundationindex=${concreteFoundationCount}`)
+          .then(response => response.text())
+          .then(html => {
+            //console.log(html);
+            const container = document.getElementById("foundationconcrete");
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            console.log(div);
+            container.appendChild(div);
+          });
+      }
+
+      function removeBlock(id)
+      {
+         const block = document.getElementById(id);
+         if (block)
+         {
+            block.remove();  
+         }
+      }
+  </script>
 </html>

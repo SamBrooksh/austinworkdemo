@@ -10,27 +10,34 @@ database ={}
 with open("information.json") as json_file:
     database = json.load(json_file)
 
+#Change all of the various responses to be sorted together in a list of it's type
+#It will return a list of each quality with the values in it 
+def categorize(dict)->dict:
+    pass
+
+
+@app.route('/concretefoundation')
+def get_new_concretefoundation():
+    concretefoundationindex = request.args.get('concretefoundationindex', type=int)
+
+    return render_template('foundation.html', database=database, concretefoundationindex=concretefoundationindex)
+
+@app.route('/test/<file>')
+def templatefile(file):
+    return render_template(file, database=database)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def step_one():
     if request.method == 'GET':
-        return render_template("foundation.html", database=database)
+        return render_template("base.html", database=database, concretefoundationindex=1)
     elif request.method == 'POST':
+        # Each category won't neccessarily start at 1...
         data = request.form
         print(data)
-        return render_template("foundation.html")
+        return data
 
-def email_content_details(results)->str:
-    choice = results.getlist("samplechoice")
-    amount = 0
-    for key in choice:
-        print(key)
-        for other_key in results.keys():
-            print(other_key)
-            if key in other_key and key != other_key:
-                amount += int(results.get(other_key))
-    #print(f"choices are {choice}")
-    return f"The sample cost is {amount}"
-    
+
 def send_email(details, subject, to):
     msg = EmailMessage()
     msg.set_content(details)

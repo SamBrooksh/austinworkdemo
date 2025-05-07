@@ -5,18 +5,18 @@
     },
 
     "consts": {
-        "foundation_concrete_adjustment": 1.66,
-        "foundation_concrete_laborday_adjustment": 1000
+        "concrete_foundation_adjustment": 1.66,
+        "concrete_foundation_laborday_adjustment": 1000
     },
 
     "functions": {
-        "foundation_concrete_volume": "FOUNDATION-CONCRETE-HEIGHT * FOUNDATION-CONCRETE-WIDTH * FOUNDATION-CONCRETE-DEPTH",
-        "foundation_concrete_materials": "foundation_concrete_volume * foundation-concrete-rebarsize",
-        "foundation_concrete_cost_adjustmentcost": "(FOUNDATION-CONCRETE-LABOR-DAYS + foundation_concrete_materials) * foundation_concrete_adjustment",
-        "foundation_concrete_cost_laborday_cost": "foundation_concrete_laborday_adjustment * (FOUNDATION-CONCRETE-LABOR-DAYS + foundation-concrete-materials) "
+        "concrete_foundation_volume": "CONCRETE-FOUNDATION-HEIGHT * CONCRETE-FOUNDATION-WIDTH * CONCRETE-FOUNDATION-DEPTH",
+        "concrete_foundation_materials": "concrete_foundation_volume * concrete-foundation-rebarsize",
+        "concrete_foundation_cost_adjustmentcost": "(CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials) * concrete_foundation_adjustment",
+        "concrete_foundation_cost_laborday_cost": "concrete_foundation_laborday_adjustment * (CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials)"
     },
-
-    "foundation-concrete-rebarsize":{
+    
+    "concrete-foundation-rebarsize":{
         "comment" : "Explanation of what rebar is?",
         "values": {
             "#3" : {
@@ -39,7 +39,7 @@
             }
         }
     },
-    "foundation-concrete-type": {
+    "concrete-foundation-type": {
         "values" : {
             "wall": {
                 "text-display": "Wall",
