@@ -10,11 +10,13 @@
     },
 
     "functions": {
-        "concrete_foundation_volume": "CONCRETE-FOUNDATION-HEIGHT * CONCRETE-FOUNDATION-WIDTH * CONCRETE-FOUNDATION-DEPTH",
+        "concrete_foundation_volume": "CONCRETE-FOUNDATION-DIMENSIONS-HEIGHT * CONCRETE-FOUNDATION-DIMENSIONS-WIDTH * CONCRETE-FOUNDATION-DIMENSIONS-DEPTH",
         "concrete_foundation_materials": "concrete_foundation_volume * concrete-foundation-rebarsize",
-        "concrete_foundation_cost_adjustmentcost": "(CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials) * concrete_foundation_adjustment",
+        "concrete_foundation_cost_adjustment_cost": "(CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials) * concrete_foundation_adjustment",
         "concrete_foundation_cost_laborday_cost": "concrete_foundation_laborday_adjustment * (CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials)"
     },
+
+    "concrete-foundation":"job" ,
     
     "concrete-foundation-rebarsize":{
         "comment" : "Explanation of what rebar is?",
@@ -34,6 +36,12 @@
             "#5" : {
                 "cost" : 10.0,
                 "text-display" : "#5",
+                "img-file" : "img.svg",
+                "comment": "Explanation of why you may need this choice"
+            },
+            "#6" : {
+                "cost" : 10.0,
+                "text-display" : "I love Rebecca",
                 "img-file" : "img.svg",
                 "comment": "Explanation of why you may need this choice"
             }
