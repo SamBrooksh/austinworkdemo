@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block concretefoundation %}
+<h3>Concrete Foundation</h1>
+<button>Add Concrete Foundation</button><br><br>
+<div>
+    <div class="foundationconcretetype">Type:<br>
+    {% for type in database["foundation-concrete-type"]["values"].keys() %}
+        <input type="radio" id="foundation-type" name="foundation-concrete-type" value="{{type}}">
+        <label >{{database["foundation-concrete-type"]["values"][type]["text-display"]}}</label> <!-- May want to eventually have a text display, but not for now -->
+        <br>
+    {% endfor %}
+    </div>
+    <br>
+    <div class="foundationconcretedimensions">Dimensions: (H x W x D)<br><!-- Need to make this all one line I think... -->
+        <input type="number" value="FOUNDATION-CONCRETE-DIMENSIONS-HEIGHT" required> x 
+        <input type="number" value="FOUNDATION-CONCRETE-DIMENSIONS-HEIGHT" required> x
+        <input type="number" value="FOUNDATION-CONCRETE-DIMENSIONS-HEIGHT" required> ft
+    </div>
+    <br>
+    <div>Rebar Size:<br>
+        {% for type in database["foundation-concrete-rebarsize"]["values"].keys() %}
+            <input type="radio" id="foundation-concrete-rebarsize{{type}}" name="foundation-concrete-rebarsize" value="{{type}}"> 
+            <label for="foundation-concrete-rebarsize{{type}}">{{database["foundation-concrete-rebarsize"]["values"][type]["text-display"]}}</label>
+            <br>
+        {% endfor %}
+    </div>
+    <br>
+    <div>Estimated Labor Days:<br>
+        <input type="number" value="FOUNDATION-CONCRETE-LABORDAYS" required>
+        <input type="checkbox" value="FOUNDATION-CONCRETE-LABORDAYS-EXPEDITED">Expedited
+    </div>
+    <!--In implementing need to have some variable that adds to the id's of everything and makes it so the label 
+    is correctly displayed I will also have to test if the value's will need that number added to them as well-->
+</div>
+
+
+{% endblock %}

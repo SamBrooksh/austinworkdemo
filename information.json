@@ -1,0 +1,56 @@
+{
+    "explanations" :{
+        "comment":"",
+        "variables-comment":"All variables/functions in consts and functions file are defined with _ between names User inputted variables are UPPERCASE and value grabbed from database sectuib will be with -"
+    },
+
+    "consts": {
+        "foundation_concrete_adjustment": 1.66,
+        "foundation_concrete_laborday_adjustment": 1000
+    },
+
+    "functions": {
+        "foundation_concrete_volume": "FOUNDATION-CONCRETE-HEIGHT * FOUNDATION-CONCRETE-WIDTH * FOUNDATION-CONCRETE-DEPTH",
+        "foundation_concrete_materials": "foundation_concrete_volume * foundation-concrete-rebarsize",
+        "foundation_concrete_cost_adjustmentcost": "(FOUNDATION-CONCRETE-LABOR-DAYS + foundation_concrete_materials) * foundation_concrete_adjustment",
+        "foundation_concrete_cost_laborday_cost": "foundation_concrete_laborday_adjustment * (FOUNDATION-CONCRETE-LABOR-DAYS + foundation-concrete-materials) "
+    },
+
+    "foundation-concrete-rebarsize":{
+        "comment" : "Explanation of what rebar is?",
+        "values": {
+            "#3" : {
+                "cost" : 10.0,
+                "text-display" : "#3",
+                "img-file" : "img.svg",
+                "comment": "Explanation of why you may need this choice"
+            },
+            "#4": {
+                "cost" : 10.0,
+                "text-display" : "#4",
+                "img-file" : "img.svg",
+                "comment": "Explanation of why you may need this choice"
+            },
+            "#5" : {
+                "cost" : 10.0,
+                "text-display" : "#5",
+                "img-file" : "img.svg",
+                "comment": "Explanation of why you may need this choice"
+            }
+        }
+    },
+    "foundation-concrete-type": {
+        "values" : {
+            "wall": {
+                "text-display": "Wall",
+                "display": "Not sure what wall counts as",
+                "comment": "Don't know what to show here either"
+            },
+            "slab": {
+                "text-display": "Slab",
+                "display": "Not sure what slab",
+                "comment": "Don't know what to show here either"
+            }
+        } 
+    }
+}
