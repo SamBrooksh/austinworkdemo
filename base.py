@@ -8,8 +8,10 @@ from copy import deepcopy
 app = Flask(__name__)
 
 database ={}
-with open("information.json") as json_file:
-    database = json.load(json_file)
+
+def get_updated_database():
+    with open("information.json") as json_file:
+        database = json.load(json_file)
 
 def strip_number_from_key(key: str)->tuple[str, int]:
     end = len(key) - 1
@@ -126,20 +128,23 @@ def handle_data(given_dict)->str:
             result[job][subjob]['use_cost'] = subtotal
             print(f"Subtotal: {subtotal}")
     print(f"FINAL DICT - {cat}")
-    
+
 
 @app.route('/concretefoundation')
 def get_new_concretefoundation():
+    get_updated_database()
     concretefoundationindex = request.args.get('concretefoundationindex', type=int)
     return render_template('foundation.html', database=database, concretefoundationindex=concretefoundationindex)
 
 @app.route('/test/<file>')
 def templatefile(file):
+    get_updated_database()
     return render_template(file, database=database)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def step_one():
+    get_updated_database()
     if request.method == 'GET':
         return render_template("base.html", database=database, concretefoundationindex=1)
     elif request.method == 'POST':
