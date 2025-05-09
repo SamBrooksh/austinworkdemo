@@ -13,6 +13,9 @@
          <button onclick="addconcretefoundation()" type="button">Add Concrete Foundation</button><br><br>
          <div id="foundationconcrete"> {% include 'foundation.html' with context %} </div>
          {% endblock %}
+         
+         <input type="text" name="clientemail" required>
+         <label for="clientemail">Email</label>
 
         <br><input type="submit">
       </form>

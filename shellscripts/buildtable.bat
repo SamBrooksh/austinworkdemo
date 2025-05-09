@@ -1,4 +1,5 @@
 
-"D:\SQLite32\sqlite3.exe" demo
+@echo off  
 
-"D:\SQLite32\sqlite3.exe" < "configfiles/builtables.sql" 
+"C:\sqlite\sqlite3.exe" demo.db ".read configfiles/buildtables.sql" 
+echo Table Made

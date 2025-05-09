@@ -4,6 +4,7 @@ import json
 import smtplib
 import os
 from copy import deepcopy
+from sqlbackend import client, add_job
 
 app = Flask(__name__)
 
@@ -43,7 +44,7 @@ def categorize(given_dict)->dict:
     new_dict = {}
     for key, value in given_dict.items():
         new_key, id = strip_number_from_key(key)
-
+        id = str(id)    #So that it is json valid - shouldn't need the actual number value....
         job = get_job(new_key, '-')
         if job not in new_dict:
             new_dict[job] = {id : {new_key: value}}
@@ -55,7 +56,16 @@ def categorize(given_dict)->dict:
 
 def get_personal_data(given_dict: dict)->tuple[dict, dict]:
     print("Getting personal data not yet implemented!")
-    return {}, given_dict
+    personal = {}
+    updated_dict = {}
+    for key in given_dict:
+        if "client" in key:
+            personal[key] = given_dict[key]
+            #Should pull it out as well - probably should be specific... 
+        else:
+            updated_dict[key] = given_dict[key]
+    print(personal, updated_dict)
+    return personal, updated_dict
 
 def get_job_functions(job)->list[str]:
     function_names = []
@@ -70,7 +80,6 @@ def get_job_constants(job:str)->dict:
         if job in key:
             consts[key] = database['consts'][key]
     return consts
-
 
 prev_func = ""
 def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
@@ -92,6 +101,9 @@ def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
         #print(f"new expr = {expr}")
 
     var_dict[func_name] = str(eval(expr, None, var_dict))
+    var_dict['FUNC_DEF_USED_'+func_name] = database["functions"][func_name]
+    # May want to pull all of these out and place in their own - so that there isn't redundancy with this part.
+    # Not very important though
     return var_dict
 
 #Adds multiple items to the dict, and returns this subtotal
@@ -134,13 +146,20 @@ def handle_data(given_dict)->str:
     cat = categorize(sanit)
     #Can easily and safely work with these now
     result = deepcopy(cat)
+    running_total = 0
     for job in cat:
         for subjob in cat[job]:
+            #Should handle decimals better here
             subtotal, result_vars = get_job_cost(cat[job][subjob], job)
             result[job][subjob]['result_vars'] = result_vars
             result[job][subjob]['use_cost'] = subtotal
-            print(f"Subtotal: {subtotal}")
-    print(f"FINAL DICT - {cat}")
+            running_total += subtotal
+            #print(f"Subtotal: {subtotal}")
+    result['TOTAL_COST'] = running_total
+    print(f"FINAL DICT - {result}")
+    client_obj = client(**personal_data)
+    add_job(result, client_obj)
+    #Need to make client object 
 
 
 @app.route('/concretefoundation')

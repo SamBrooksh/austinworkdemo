@@ -1,14 +1,17 @@
-CREATE TABLE client IF NOT EXISTS (
-    id INTEGER PRIMARY KEY ASC, 
-    email VARCHAR(255)
+/* Need to create the database here as well
+*/
+
+CREATE TABLE IF NOT EXISTS client (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    email TEXT
 );
 /*
 Need to add all the other possible client details
 */
 
-CREATE TABLE stage IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS stage (
     id INTEGER PRIMARY KEY ASC,
-    name VARCHAR(255)
+    name TEXT
 );
 
 /* May not be JSON...
@@ -17,7 +20,7 @@ CREATE TABLE stage IF NOT EXISTS (
 * Should probably have a job table that has a possible id for all the different jobs - and track a one to many for each and so on
 * But for this first demo this should be enough
 */
-CREATE TABLE clientrequests IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS clientrequests (
     id INTEGER PRIMARY KEY ASC,
     details TEXT,
     stage INTEGER NOT NULL,
@@ -28,5 +31,5 @@ CREATE TABLE clientrequests IF NOT EXISTS (
 );
 /* I'm assuming that receipt will be the paid for amount - I don't know what is needed for bookkeeping here 
 - Should probably make this assign specific values - like starting at 1*/
-INSERT INTO stage(id, name) VALUES (1, "RECEIVED_REQUEST"), (2, "ACCEPTED"), 
-    (3, "IN_PROGRESS"), (4, "COMPLETED"), (5, "PAIDANDDONE");
+INSERT INTO stage(id, name) VALUES (1, 'RECEIVED_REQUEST'), (2, 'ACCEPTED'), 
+ (3, 'IN_PROGRESS'), (4, 'COMPLETED'), (5, 'PAIDDONE');
