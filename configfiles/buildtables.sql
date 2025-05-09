@@ -19,13 +19,14 @@ CREATE TABLE stage IF NOT EXISTS (
 */
 CREATE TABLE clientrequests IF NOT EXISTS (
     id INTEGER PRIMARY KEY ASC,
-    details JSON,
+    details TEXT,
     stage INTEGER NOT NULL,
     client INTEGER NOT NULL, 
-    receipt JSON,
+    receipt TEXT,
     FOREIGN KEY(client) references client(id),
     FOREIGN KEY(stage) references stage(id)
 );
 /* I'm assuming that receipt will be the paid for amount - I don't know what is needed for bookkeeping here 
 - Should probably make this assign specific values - like starting at 1*/
-INSERT INTO stage(name) VALUES ("RECEIVED_REQUEST", "ACCEPTED", "IN_PROGRESS", "COMPLETED", "PAIDANDDONE");
+INSERT INTO stage(id, name) VALUES (1, "RECEIVED_REQUEST"), (2, "ACCEPTED"), 
+    (3, "IN_PROGRESS"), (4, "COMPLETED"), (5, "PAIDANDDONE");

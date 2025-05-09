@@ -1,7 +1,6 @@
 import sqlite3
 from enum import IntEnum
 
-
 sql_database = ""
 #Grab the stages from database and throw in dict of {id:name}
 # Hmm, I may change how this works later - it would be nice if I could add it dynamically with the database
@@ -25,7 +24,8 @@ class client:
 
 # Attempts to find client in table, if not found makes one and adds new row to clientrequests
 # With no receipt and Stage at RECEIVED_REQUEST
-def add_job(details:dict, cl: client):
+# Return the id of the row entered, or -1 for an error
+def add_job(details:dict, cl: client)->int:
     #Should add a try except here
     with sqlite3.connect(sql_database) as conn:
         cursor = conn.cursor()
@@ -40,6 +40,8 @@ def add_job(details:dict, cl: client):
             client_id = rows[0][0] #Not sure how to specifically get id in a better way...
         add_job_command = f"INSERT INTO clientrequests(details, stage, client) VALUES (?, ?, ?)"
         cursor.execute(add_job_command, (details, stages.RECEIVED_REQUEST, client_id))
+        return cursor.lastrowid
+
 
 def update_job_stage(job_id:int, new_stage:stages):
     pass
