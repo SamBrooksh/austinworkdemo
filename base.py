@@ -10,8 +10,11 @@ app = Flask(__name__)
 database ={}
 
 def get_updated_database():
-    with open("information.json") as json_file:
+    global database
+    with open("configfiles/information.json") as json_file:
         database = json.load(json_file)
+
+get_updated_database()
 
 def strip_number_from_key(key: str)->tuple[str, int]:
     end = len(key) - 1
@@ -68,10 +71,20 @@ def get_job_constants(job:str)->dict:
             consts[key] = database['consts'][key]
     return consts
 
+
+prev_func = ""
 def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
+    global prev_func
+    expr = database['functions'][func_name]
+    if prev_func == func_name:
+        raise ValueError(f"{prev_func}\n{var_dict}\n{functions}\n{expr}\n")
+    prev_func = func_name
     if func_name in var_dict:
         return var_dict
-    expr = database['functions'][func_name]
+    
+    # Current error where if const has a partial match of function it breaks 
+    # ex const: concrete_found_expedited_const - Functions concrete_found_expedited
+    # Make the dict comprehension grab exact word matches
     var_dict.update({k: recurse_compute_func(k, var_dict, functions) for k in functions if k in expr and k not in var_dict})
     for k in var_dict:
         #print(f"{k} : {var_dict[k]} : {expr}")

@@ -24,7 +24,7 @@
     <br>
     <div>Estimated Labor Days:<br>
         <input type="number" name="CONCRETE-FOUNDATION-LABOR-DAYS{{concretefoundationindex}}" required>
-        <input type="checkbox" name="CONCRETE-FOUNDATION-LABOR-DAYS-EXPEDITED{{concretefoundationindex}}">Expedited
+        <input type="hidden" name="CONCRETE-FOUNDATION-DAYS-EXPEDITED{{concretefoundationindex}}" value="0"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">Expedited
     </div>
     <button type="button" onclick="removeBlock('concretefoundation{{concretefoundationindex}}')">Delete</button>
 </div>
