@@ -1,20 +1,26 @@
-from flask import Flask, redirect, url_for, request, render_template, jsonify
+from flask import Flask, flash, redirect, url_for, request, render_template, jsonify, render_template_string
+from flask_login import LoginManager, login_required, logout_user, login_user
 from email.message import EmailMessage 
 import json
 import smtplib
 import os
 from copy import deepcopy
-from sqlbackend import client, add_job
+from sqlbackend import client, add_job, get_user, get_user_by_username, User
 
 app = Flask(__name__)
+app.secret_key = 'TEMPORARYKEY'
+#Need to make it grab from os
 
-database ={}
+database = {}
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 def get_updated_database():
     global database
     with open("configfiles/information.json") as json_file:
         database = json.load(json_file)
-
+#Does not contain any User/Client - information in sql database
 get_updated_database()
 
 def strip_number_from_key(key: str)->tuple[str, int]:
@@ -139,7 +145,7 @@ def get_job_cost(given_dict: dict, job:str)->tuple[int, dict]:
     return use, computed_variables
     
 
-def handle_data(given_dict)->str:
+def handle_data(given_dict:dict)->str:
     #I need to know how to handle the boolean values - if they shoudl apply or not in some way and how to identify that
     sanit = sanitize(given_dict)
     personal_data, sanit = get_personal_data(sanit)
@@ -169,12 +175,14 @@ def get_new_concretefoundation():
     return render_template('foundation.html', database=database, concretefoundationindex=concretefoundationindex)
 
 @app.route('/test/<file>')
+@login_required
 def templatefile(file):
     get_updated_database()
     return render_template(file, database=database)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/details', methods=['GET', 'POST'])
+@login_required
 def step_one():
     get_updated_database()
     if request.method == 'GET':
@@ -183,8 +191,47 @@ def step_one():
         # Each category won't neccessarily start at 1
         data = request.form
         response = handle_data(data)
-        return data
+        return response
 
+@login_manager.user_loader
+def load_user(user_id):
+    # Query the database for User information instead of this
+    user = get_user(user_id)
+    if user:
+        return user
+    return None
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user_row = get_user_by_username(username)
+        if user_row:
+            user = user_row
+            if user.check_password(password):
+                login_user(user)
+                flash('Logged in successfully.')
+                print("Successful login")
+                return redirect('/details')
+        flash('Invalid username or password')
+        print("Failed login")
+        return redirect(url_for('login'))
+    return render_template_string('''
+        <h2>Login</h2>
+        <form method="post">
+            Username: <input name="username"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit" value="Login">
+        </form>
+    ''')
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/login")
 
 def send_email(details, subject, to):
     msg = EmailMessage()

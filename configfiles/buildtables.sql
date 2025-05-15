@@ -11,7 +11,7 @@ Need to add all the other possible client details
 
 CREATE TABLE IF NOT EXISTS stage (
     id INTEGER PRIMARY KEY ASC,
-    name TEXT
+    name TEXT NOT NULL
 );
 
 /* May not be JSON...
@@ -33,3 +33,20 @@ CREATE TABLE IF NOT EXISTS clientrequests (
 - Should probably make this assign specific values - like starting at 1*/
 INSERT INTO stage(id, name) VALUES (1, 'RECEIVED_REQUEST'), (2, 'ACCEPTED'), 
  (3, 'IN_PROGRESS'), (4, 'COMPLETED'), (5, 'PAIDDONE');
+
+CREATE TABLE IF NOT EXISTS userrolls (
+    id INTEGER PRIMARY KEY ASC,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS webusers (
+    id INTEGER PRIMARY KEY ASC, 
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL, 
+    role INTEGER NOT NULL,
+    FOREIGN KEY (role) references userrolls(id)
+);
+
+INSERT INTO userrolls(name) VALUES ('ADMIN'), ('CLIENT'), ('FINDER');
+
+INSERT INTO webusers(username, password, role) VALUES ('sam', 'sam', 1);
