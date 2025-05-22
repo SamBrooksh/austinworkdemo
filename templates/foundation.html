@@ -1,5 +1,5 @@
 
-    <div id="concretefoundation{{concretefoundationindex}}">
+<div id="concretefoundation{{concretefoundationindex}}">
     <div class="concretefoundationtype">Type:<br>
     {% for type in database["concrete-foundation-type"]["values"].keys() %}
         <input type="radio" id="foundation-type{{type}}{{concretefoundationindex}}" name="concrete-foundation-type{{concretefoundationindex}}" value="{{type}}">
@@ -26,6 +26,7 @@
         <input type="number" name="CONCRETE-FOUNDATION-LABOR-DAYS{{concretefoundationindex}}" required>
         <input type="hidden" name="CONCRETE-FOUNDATION-DAYS-EXPEDITED{{concretefoundationindex}}" value="0"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">Expedited
     </div>
+    <br>
     <button type="button" onclick="removeBlock('concretefoundation{{concretefoundationindex}}')">Delete</button>
 </div>
     <!--In implementing need to have some variable that adds to the id's of everything and makes it so the label 

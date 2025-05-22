@@ -6,13 +6,29 @@
    </nav>
    <body>
       {% block mainblock %}
+      <div class="tabmenu">
+         <button class="tablinks" onclick="">Foundation Concrete</button>
+         <button class="tablinks" onclick="">Gutters</button>
+      </div>
       <form method="post">
          <!-- Could add a tab menu here to show the various jobs -->
+         
         {% block concretefoundation %}
+        <div id="foundationconcrete" class="tab">
         <h3>Concrete Foundation</h1>
          <button onclick="addconcretefoundation()" type="button">Add Concrete Foundation</button><br><br>
-         <div id="foundationconcrete"> {% include 'foundation.html' with context %} </div>
+          {% include 'foundation.html' with context %} 
+         </div>
          {% endblock %}
+         
+
+         <br>
+         {% block gutters %}
+         <h3>Gutters</h3>
+         <button onclick="addgutters()" type="button">Add Gutter Section</button><br><br>
+         <div id="gutters"> {% include 'gutters.html' with context %} </div>
+         {% endblock %}
+         <br>
          
          <input type="text" name="clientemail" required>
          <label for="clientemail">Email</label>
@@ -25,6 +41,7 @@
    <!-- Should add this script to a js file for future reasons-->
    <script>
       let concreteFoundationCount = 1;
+      let gutters = 1;
       function addconcretefoundation()
       {
          concreteFoundationCount++;
@@ -40,6 +57,21 @@
           });
       }
 
+      function addgutters()
+      {
+         gutters++;
+         fetch(`/gutters?guttersindex=${gutters}`)
+          .then(response => response.text())
+          .then(html => {
+            //console.log(html);
+            const container = document.getElementById("gutters");
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            console.log(div);
+            container.appendChild(div);
+          });
+      }
+
       function removeBlock(id)
       {
          const block = document.getElementById(id);
@@ -47,6 +79,11 @@
          {
             block.remove();  
          }
+      }
+
+      function openJobTab(evt, tabName) {
+         var i, tabcontent, tablinks;
+
       }
   </script>
 </html>

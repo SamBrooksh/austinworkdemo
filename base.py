@@ -168,6 +168,13 @@ def get_new_concretefoundation():
     concretefoundationindex = request.args.get('concretefoundationindex', type=int)
     return render_template('foundation.html', database=database, concretefoundationindex=concretefoundationindex)
 
+@app.route('/gutters')
+def get_new_gutters():
+    get_updated_database()
+    guttersindex = request.args.get('guttersindex', type=int)
+    return render_template('gutters.html', database=database, guttersindex=guttersindex)
+
+
 @app.route('/test/<file>')
 def templatefile(file):
     get_updated_database()

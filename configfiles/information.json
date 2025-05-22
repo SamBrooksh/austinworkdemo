@@ -7,7 +7,13 @@
     "consts": {
         "concrete_foundation_adjustment": 1.66,
         "concrete_foundation_laborday_adjustment": 1000,
-        "concrete_foundation_expedited_const": 0.75
+        "concrete_foundation_expedited_const": 0.75,
+
+        "gutter_profit_factor" : 3.0,
+        "gutter_commision_const" : 0.1,
+        "gutter_material_cost_k_style_5": 2.5 ,
+        "gutter_downspout_straps_distance": 24
+
     },
 
     "functions": {
@@ -15,10 +21,27 @@
         "concrete_foundation_materials": "concrete_foundation_volume * concrete-foundation-rebarsize",
         "concrete_foundation_expedited_adjustment": "(CONCRETE-FOUNDATION-DAYS-EXPEDITED * concrete_foundation_expedited_const) + 1",
         "concrete_foundation_cost_adjustment_cost": "concrete_foundation_expedited_adjustment * ((CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials) * concrete_foundation_adjustment)",
-        "concrete_foundation_cost_laborday_cost": "concrete_foundation_expedited_adjustment * (concrete_foundation_laborday_adjustment * (CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials))"
+        "concrete_foundation_cost_laborday_cost": "concrete_foundation_expedited_adjustment * (concrete_foundation_laborday_adjustment * (CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials))",
+    
+    
+        "gutter_guard_material_subcost" : "(gutter-guards-type)",
+        "gutter_guard_labor_subcost" : "(gutter-guards-type)",
+        "gutter_dimensions_lf" : "GUTTER-DIMESIONS-GUTTER + GUTTER-DIMESIONS-DOWNSPOUT",
+        "gutter_base_material_subcost" : "GUTTER-DIMESIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type",
+        "gutter_base_labor_subcost" : "GUTTER-DIMESIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type",
+        "gutter_straps_subcost": "roundup(GUTTER-DIMESIONS-DOWNSPOUT / gutter_downspout_straps_distance) * gutter-downspout-straps * gutter_profit_factor",
+        "gutter_demo_cost": "(GUTTER-DEMO * gutter_dimensions_lf * gutter_profit_factor)",
+        "gutter_downspouts_labor_subcost": "",
+        "gutter_downspouts_material_subcost":"",
+        "gutter_materials_subcost": "",
+        "gutter_labors_subcost": "gutter_demo_cost + gutter_base_labor_subcost + ",
+        "gutter_cost": "gutter_base_labors_subcost + gutter_materials_subcost"
+
+    
     },
 
-    "concrete-foundation":"job" ,
+    "concrete-foundation":"job",
+    "gutter":"job",
     
     "concrete-foundation-rebarsize":{
         "comment" : "Explanation of what rebar is?",
@@ -43,6 +66,7 @@
             }
         }
     },
+
     "concrete-foundation-type": {
         "values" : {
             "wall": {
@@ -56,5 +80,58 @@
                 "comment": "Don't know what to show here either"
             }
         } 
+    },
+
+    "gutter-guards-type":{
+        "values" : {
+            "none" : {
+                "text-display": "None",
+                "cost" : 0,
+                "link": ""
+            },
+            "jofiterm" : {
+                "text-display": "Jofiterm Gutter Guard",
+                "cost" : 0.94,
+                "link" : "https://www.amazon.com/Waterlock-Micromesh-Protection-Contractor-Manufacturer/dp/B09V4XXNTD/ref=sr_1_60?crid=1UMC4R3C2TNK6&dib=eyJ2IjoiMSJ9.cKtqTfe40OJAI3Q-trUuLwTEQEsNh3rUwK2dZkqfsFlpbTJEzcsArsXijY_TjYcZLv14U8wotDZFNRioQBbB9HnxmNS6x5KrYcobseXCPH0WJ1mJ5_mTMBcsMKIoBWD65Di-nz52MdoAVDb8mNzbyJ2CG19-6FKFZmtUtPNXXo32n3sYHDOyQVoO4twaZjCqTJwp_nlQtsVUQ39PPXT85cT6RVtza0vFbDYmoDxqwOIkOGU4aZ4v6W_11NC2YsQoR2o6WMEEj_YMGsYmrlHrUFXyoJeq5jLx07BWfCfv7Es.1GNoCO4DwMOJbHNcBpjEKYzS8xDml3VdS4XgL1g148c&dib_tag=se&keywords=gutter%2Bguard%2Bvinyl&qid=1747796786&sprefix=gutter%2Bguard%2Bvinyl%2Caps%2C219&sr=8-60&th=1"
+            },
+            "waterlock" : {
+                "text-display": "Waterlock Micromesh",
+                "cost" : 6.00,
+                "link" : "https://www.amazon.com/Waterlock-Micromesh-Protection-Contractor-Manufacturer/dp/B09V4XXNTD/ref=sr_1_60?crid=1UMC4R3C2TNK6&dib=eyJ2IjoiMSJ9.cKtqTfe40OJAI3Q-trUuLwTEQEsNh3rUwK2dZkqfsFlpbTJEzcsArsXijY_TjYcZLv14U8wotDZFNRioQBbB9HnxmNS6x5KrYcobseXCPH0WJ1mJ5_mTMBcsMKIoBWD65Di-nz52MdoAVDb8mNzbyJ2CG19-6FKFZmtUtPNXXo32n3sYHDOyQVoO4twaZjCqTJwp_nlQtsVUQ39PPXT85cT6RVtza0vFbDYmoDxqwOIkOGU4aZ4v6W_11NC2YsQoR2o6WMEEj_YMGsYmrlHrUFXyoJeq5jLx07BWfCfv7Es.1GNoCO4DwMOJbHNcBpjEKYzS8xDml3VdS4XgL1g148c&dib_tag=se&keywords=gutter%2Bguard%2Bvinyl&qid=1747796786&sprefix=gutter%2Bguard%2Bvinyl%2Caps%2C219&sr=8-60&th=1"
+            }
+        }
+    },
+
+    "gutter-screws-type": {
+        "values" : {
+            "basic": {
+                "text-display" :"Not being shown currently - more if this needs to be expanded later",
+                "cost": 16.99
+            }
+        }
+    },
+
+    "gutter-downspout-straps": {
+        "values" : {
+            "basic" : {
+                "text-display" :"Not being shown currently - more if this needs to be expanded later",
+                "cost" : 15.99
+            }
+        }
+    },
+
+    "gutter-base-gutter-type": {
+        "values" : {
+            "k-style-5" : {
+                "text-display" :"Not being shown currently - more if this needs to be expanded later",
+                "cost" : 2.5,
+                "material-cost" : 2.5,
+                "comment": "I think that it's possible that the material cost could be different than the labor cost... Don't have a good way to get multiple values from this at the moment - may need to change that"
+            }
+        }
     }
+
+
+    
+    
 }

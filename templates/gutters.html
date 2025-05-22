@@ -1,0 +1,21 @@
+<div id="gutter{{gutterindex}}">
+    <input type="hidden" name="GUTTER-DEMO{{gutterindex}}" value="0"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">Demo Needed?
+    <br><br>
+    <div class="gutterdimensions">Gutter Dimensions:<br>
+        <input type="number" name="GUTTER-DIMENSIONS-GUTTER{{gutterindex}}" required> Linear ft
+        <br>
+        <br>Downspout Dimensions:<br>
+        <input type="number" name="GUTTER-DIMENSIONS-DOWNSPOUT{{gutterindex}}" required> Linear ft
+    </div>
+    <br>
+    <div class="gutterguards">Gutter Guards:<br>
+        {% for type in database["gutter-guards-type"]["values"].keys() %}
+        <input type="radio" id="gutter-guards-type{{type}}{{gutterindex}}" name="gutter-guards-type{{gutterindex}}" value="{{type}}"> 
+        <label for="gutter-guards-type{{type}}{{gutterindex}}">{{database["gutter-guards-type"]["values"][type]["text-display"]}}</label>
+        <br>
+        {% endfor %}
+    </div>
+    <br>
+    <button type="button" onclick="removeBlock('gutter{{gutterindex}}')">Delete</button>
+
+</div>
