@@ -95,13 +95,19 @@ def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
     # Current error where if const has a partial match of function it breaks 
     # ex const: concrete_found_expedited_const - Functions concrete_found_expedited
     # Make the dict comprehension grab exact word matches
-    var_dict.update({k: recurse_compute_func(k, var_dict, functions) for k in functions if k in expr and k not in var_dict})
+    #print(f"VAR DICT: {var_dict}")
+    temp_dict = {k: (recurse_compute_func(k, var_dict, functions))[k] for k in functions if k in expr and k not in var_dict}
+    #print(f"Temp dict: {temp_dict}")
+    var_dict.update(temp_dict)
+    #print(f"AFTER UPDATE VAR DICT: {var_dict}")
+    
     for k in var_dict:
         #print(f"{k} : {var_dict[k]} : {expr}")
         expr = expr.replace(k, str(var_dict[k]))
-        #print(f"new expr for {func_name} = {expr}")
-
+        
+    print(f"new expr for {func_name} = {expr}")
     var_dict[func_name] = str(eval(expr, {"ceil" : ceil}, var_dict))
+    #print(f"var_dict[func_name] = {var_dict[func_name]}")
     var_dict['FUNC_DEF_USED_'+func_name] = database["functions"][func_name]
     # May want to pull all of these out and place in their own - so that there isn't redundancy with this part.
     # Not very important though
@@ -113,6 +119,7 @@ def get_job_cost(given_dict: dict, job:str)->tuple[int, dict]:
     useable_functions = get_job_functions(job.replace('-', '_'))
     computed_variables = {}
     #Save the given values
+    #print(f"Get Job Cost begin dict : {given_dict}")
     for key in given_dict:
         #print(key, given_dict[key])
         if key[0].isupper():
@@ -123,7 +130,15 @@ def get_job_cost(given_dict: dict, job:str)->tuple[int, dict]:
             else:
                 computed_variables[key] = given_dict[key]
         elif key in database and "cost" in database[key]['values'][given_dict[key]]:
+            #print(f"in elif : {key}")
+            # I think I'm gong to have it skip the ones without a base cost
+            # and then handle it in the computed functions handling the . 
             computed_variables[key] = str(database[key]['values'][given_dict[key]]['cost'])
+        elif key in database:
+            computed_variables[key] = str(database[key]['values'][given_dict[key]])
+        #        vals = database[key]['values'][given_dict[key]].split('.')
+        #        computed_variables[vals[0]+"_"+vals[1]] = str(database[key]['values'][given_dict[vals[0]][vals[1]]])
+        #        print(f"COMPUTED VARS = {computed_variables}") 
     
     #print(f"in get job cost - JOB: {job} \ngiven_dict: {given_dict}\nuseable_functions: {useable_functions}\ncomputed_variables: {computed_variables}")
     #I may want to have a way to overwrite the current consts being used on the fly - not implemented though

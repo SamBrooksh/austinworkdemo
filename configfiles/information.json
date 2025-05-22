@@ -12,8 +12,9 @@
         "gutter_profit_factor" : 3.0,
         "gutter_commision_const" : 0.1,
         "gutter_material_cost_k_style_5": 2.5 ,
-        "gutter_downspout_straps_distance": 24
-
+        "gutter_downspout_straps_distance": 24,
+        "gutters_expedited_const": 0.25,
+        "gutters_two_story_const": 0.25
     },
 
     "functions": {
@@ -24,18 +25,20 @@
         "concrete_foundation_cost_laborday_cost": "concrete_foundation_expedited_adjustment * (concrete_foundation_laborday_adjustment * (CONCRETE-FOUNDATION-LABOR-DAYS + concrete_foundation_materials))",
     
     
-        "gutter_guard_material_subcost" : "(gutter-guards-type)",
-        "gutter_guard_labor_subcost" : "(gutter-guards-type)",
+        "gutter_guard_labor_subcost" : "gutter-guards-type * gutter_dimensions_lf * gutter_profit_factor",
         "gutter_dimensions_lf" : "GUTTER-DIMENSIONS-GUTTER + GUTTER-DIMENSIONS-DOWNSPOUT",
-        "gutter_base_material_subcost" : "GUTTER-DIMENSIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type",
-        "gutter_base_labor_subcost" : "GUTTER-DIMENSIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type",
+        "gutter_guard_material_subcost" : "gutter-guards-type * gutter_dimensions_lf * gutter_profit_factor",
+        "gutter_base_material_subcost" : "GUTTER-DIMENSIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type['material-cost']",
+        "gutter_base_labor_subcost" : "GUTTER-DIMENSIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type['labor-cost']",
         "gutter_straps_subcost": "ceil(GUTTER-DIMENSIONS-DOWNSPOUT / gutter_downspout_straps_distance) * gutter-downspout-straps * gutter_profit_factor",
         "gutter_demo_cost": "(GUTTER-DEMO * gutter_dimensions_lf * gutter_profit_factor)",
         "gutter_downspouts_labor_subcost": "",
         "gutter_downspouts_material_subcost":"",
         "gutter_materials_subcost": "",
         "gutter_labors_subcost": "gutter_demo_cost + gutter_base_labor_subcost + ",
-        "gutter_cost": "gutter_base_labors_subcost + gutter_materials_subcost"
+        "gutters_expedited_mult": "gutters_expedited_const * GUTTERS-EXPEDITED",
+        "gutters_two_story_mult": "gutters_two_story_const * 1",
+        "gutter_cost": "(gutter_base_labors_subcost + gutter_materials_subcost) * (1 + gutters_expedited_mult + gutters_two_story_mult)"
 
     
     },
@@ -124,7 +127,7 @@
         "values" : {
             "k-style-5" : {
                 "text-display" :"Not being shown currently - more if this needs to be expanded later",
-                "cost" : 2.5,
+                "labor-cost" : 2.5,
                 "material-cost" : 2.5,
                 "comment": "I think that it's possible that the material cost could be different than the labor cost... Don't have a good way to get multiple values from this at the moment - may need to change that"
             }

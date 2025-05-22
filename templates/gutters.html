@@ -23,7 +23,11 @@
     <div class="gutterdownspoutstraps">
         <input type="hidden" id="gutter-downspout-straps{{gutterindex}}" name="gutter-downspout-straps{{gutterindex}}" value="basic">
     </div>
-
+    <br>
+    <div>Estimated Labor Days:<br>
+        <input type="number" name="GUTTERS-LABOR-DAYS{{gutterindex}}" required>
+        <input type="hidden" name="GUTTERS-EXPEDITED{{gutterindex}}" value="0"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">Expedited
+    </div>
     <br>
     <button type="button" onclick="removeBlock('gutter{{gutterindex}}')">Delete</button>
 
