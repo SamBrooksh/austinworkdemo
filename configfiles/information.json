@@ -32,10 +32,12 @@
         "gutter_base_labor_subcost" : "GUTTER-DIMENSIONS-DOWNSPOUT * gutter_profit_factor * gutter-base-gutter-type['labor-cost']",
         "gutter_straps_subcost": "ceil(GUTTER-DIMENSIONS-DOWNSPOUT / gutter_downspout_straps_distance) * gutter-downspout-straps * gutter_profit_factor",
         "gutter_demo_cost": "(GUTTER-DEMO * gutter_dimensions_lf * gutter_profit_factor)",
+        "gutter_screws_subcost": "",
         "gutter_downspouts_labor_subcost": "",
-        "gutter_downspouts_material_subcost":"",
-        "gutter_materials_subcost": "",
-        "gutter_labors_subcost": "gutter_demo_cost + gutter_base_labor_subcost + ",
+
+        "gutter_downspouts_material_subcost":"gutter_straps_subcost + WITH SOMETHING ABOUT DOWNSPOUT",
+        "gutter_materials_subcost": "gutter_downspouts_material_subcost + gutter_screws_subcost + gutter_guard_material_subcost + gutter_base_material_subcost",
+        "gutter_labors_subcost": "gutter_demo_cost + gutter_base_labor_subcost",
         "gutters_expedited_mult": "gutters_expedited_const * GUTTERS-EXPEDITED",
         "gutters_two_story_mult": "gutters_two_story_const * 1",
         "gutter_cost": "(gutter_base_labors_subcost + gutter_materials_subcost) * (1 + gutters_expedited_mult + gutters_two_story_mult)"
@@ -45,7 +47,7 @@
 
     "concrete-foundation":"job",
     "gutter":"job",
-    
+    "DATA-TYPE-COMMENTS": "For the below - there are two ways to access information from them in the functions - one is if you only need one value to glean from it - use cost. For multiple, you can't have a key with cost, and you reference it as a dictionary. All of the possible values must be in a 'values' dict as well - as that is what will be given by the user as to which value to choose",
     "concrete-foundation-rebarsize":{
         "comment" : "Explanation of what rebar is?",
         "values": {
