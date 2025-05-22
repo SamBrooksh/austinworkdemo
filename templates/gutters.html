@@ -10,11 +10,20 @@
     <br>
     <div class="gutterguards">Gutter Guards:<br>
         {% for type in database["gutter-guards-type"]["values"].keys() %}
-        <input type="radio" id="gutter-guards-type{{type}}{{gutterindex}}" name="gutter-guards-type{{gutterindex}}" value="{{type}}"> 
+        <input type="radio" id="gutter-guards-type{{type}}{{gutterindex}}" name="gutter-guards-type{{gutterindex}}" value="{{type}}" required> 
         <label for="gutter-guards-type{{type}}{{gutterindex}}">{{database["gutter-guards-type"]["values"][type]["text-display"]}}</label>
         <br>
         {% endfor %}
     </div>
+
+    <div class="gutterbase">
+        <input type="hidden" id="gutter-base-gutter{{gutterindex}}" name="gutter-base-gutter-type{{gutterindex}}" value="k-style-5">
+    </div>
+
+    <div class="gutterdownspoutstraps">
+        <input type="hidden" id="gutter-downspout-straps{{gutterindex}}" name="gutter-downspout-straps{{gutterindex}}" value="basic">
+    </div>
+
     <br>
     <button type="button" onclick="removeBlock('gutter{{gutterindex}}')">Delete</button>
 

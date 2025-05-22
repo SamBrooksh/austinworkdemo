@@ -5,6 +5,7 @@ import smtplib
 import os
 from copy import deepcopy
 from sqlbackend import client, add_job
+from math import ceil
 
 app = Flask(__name__)
 
@@ -98,9 +99,9 @@ def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
     for k in var_dict:
         #print(f"{k} : {var_dict[k]} : {expr}")
         expr = expr.replace(k, str(var_dict[k]))
-        #print(f"new expr = {expr}")
+        #print(f"new expr for {func_name} = {expr}")
 
-    var_dict[func_name] = str(eval(expr, None, var_dict))
+    var_dict[func_name] = str(eval(expr, {"ceil" : ceil}, var_dict))
     var_dict['FUNC_DEF_USED_'+func_name] = database["functions"][func_name]
     # May want to pull all of these out and place in their own - so that there isn't redundancy with this part.
     # Not very important though
@@ -171,8 +172,8 @@ def get_new_concretefoundation():
 @app.route('/gutters')
 def get_new_gutters():
     get_updated_database()
-    guttersindex = request.args.get('guttersindex', type=int)
-    return render_template('gutters.html', database=database, guttersindex=guttersindex)
+    gutterindex = request.args.get('gutterindex', type=int)
+    return render_template('gutters.html', database=database, gutterindex=gutterindex)
 
 
 @app.route('/test/<file>')
@@ -185,7 +186,7 @@ def templatefile(file):
 def step_one():
     get_updated_database()
     if request.method == 'GET':
-        return render_template("base.html", database=database, concretefoundationindex=1)
+        return render_template("base.html", database=database, concretefoundationindex=1, gutterindex=1)
     elif request.method == 'POST':
         # Each category won't neccessarily start at 1
         data = request.form

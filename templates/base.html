@@ -7,8 +7,8 @@
    <body>
       {% block mainblock %}
       <div class="tabmenu">
-         <button class="tablinks" onclick="">Foundation Concrete</button>
-         <button class="tablinks" onclick="">Gutters</button>
+         <button class="tablinks" onclick="openJobTab(event, 'foundationconcrete')">Foundation Concrete</button>
+         <button class="tablinks" onclick="openJobTab(event, 'gutters')">Gutters</button>
       </div>
       <form method="post">
          <!-- Could add a tab menu here to show the various jobs -->
@@ -18,15 +18,18 @@
         <h3>Concrete Foundation</h1>
          <button onclick="addconcretefoundation()" type="button">Add Concrete Foundation</button><br><br>
           {% include 'foundation.html' with context %} 
+         <br>
          </div>
          {% endblock %}
          
 
-         <br>
+         
          {% block gutters %}
+         <div id="gutters" class="tab">
          <h3>Gutters</h3>
          <button onclick="addgutters()" type="button">Add Gutter Section</button><br><br>
-         <div id="gutters"> {% include 'gutters.html' with context %} </div>
+          {% include 'gutters.html' with context %} 
+         </div>
          {% endblock %}
          <br>
          
@@ -82,8 +85,13 @@
       }
 
       function openJobTab(evt, tabName) {
-         var i, tabcontent, tablinks;
-
+         var i, tabcontent;
+         tabcontent = document.getElementsByClassName("tab");
+         for (i = 0; i < tabcontent.length; i++)
+         {
+            tabcontent[i].style.display = "none";
+         }
+         document.getElementById(tabName).style.display = "block";
       }
   </script>
 </html>
