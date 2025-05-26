@@ -96,6 +96,7 @@ def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
     # ex const: concrete_found_expedited_const - Functions concrete_found_expedited
     # Make the dict comprehension grab exact word matches
     #print(f"VAR DICT: {var_dict}")
+    #Made it so that the temp dict gets the specific function that was used, not just all of them
     temp_dict = {k: (recurse_compute_func(k, var_dict, functions))[k] for k in functions if k in expr and k not in var_dict}
     #print(f"Temp dict: {temp_dict}")
     var_dict.update(temp_dict)

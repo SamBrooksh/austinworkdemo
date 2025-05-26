@@ -34,7 +34,6 @@
         "gutter_demo_cost": "(GUTTER-DEMO * gutter_dimensions_lf * gutter_profit_factor)",
         "gutter_screws_subcost": "",
         "gutter_downspouts_labor_subcost": "",
-
         "gutter_downspouts_material_subcost":"gutter_straps_subcost + WITH SOMETHING ABOUT DOWNSPOUT",
         "gutter_materials_subcost": "gutter_downspouts_material_subcost + gutter_screws_subcost + gutter_guard_material_subcost + gutter_base_material_subcost",
         "gutter_labors_subcost": "gutter_demo_cost + gutter_base_labor_subcost",
