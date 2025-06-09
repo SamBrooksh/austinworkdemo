@@ -20,13 +20,17 @@
         <input type="hidden" id="gutter-base-gutter{{gutterindex}}" name="gutter-base-gutter-type{{gutterindex}}" value="k-style-5">
     </div>
 
+    <div class="gutterscrews">
+        <input type="hidden" id="gutter-screws-type{{gutterindex}}" name="gutter-screws-type{{gutterindex}}" value="basic">
+    </div>
+
     <div class="gutterdownspoutstraps">
         <input type="hidden" id="gutter-downspout-straps{{gutterindex}}" name="gutter-downspout-straps{{gutterindex}}" value="basic">
     </div>
     <br>
     <div>Estimated Labor Days:<br>
-        <input type="number" name="GUTTERS-LABOR-DAYS{{gutterindex}}" required>
-        <input type="hidden" name="GUTTERS-EXPEDITED{{gutterindex}}" value="0"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">Expedited
+        <input type="number" name="GUTTER-LABOR-DAYS{{gutterindex}}" required>
+        <input type="hidden" name="GUTTER-EXPEDITED{{gutterindex}}" value="0"><input type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">Expedited
     </div>
     <br>
     <button type="button" onclick="removeBlock('gutter{{gutterindex}}')">Delete</button>

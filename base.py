@@ -95,7 +95,9 @@ def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
     # Current error where if const has a partial match of function it breaks 
     # ex const: concrete_found_expedited_const - Functions concrete_found_expedited
     # Make the dict comprehension grab exact word matches
-    #print(f"VAR DICT: {var_dict}")
+    #print(f"VAR DICT: {var_dict} \nexpr: {expr}")
+    #vals = [var_dict[k] for k in functions if k in expr and k not in var_dict]
+    #print(vals)
     #Made it so that the temp dict gets the specific function that was used, not just all of them
     temp_dict = {k: (recurse_compute_func(k, var_dict, functions))[k] for k in functions if k in expr and k not in var_dict}
     #print(f"Temp dict: {temp_dict}")
@@ -106,7 +108,7 @@ def recurse_compute_func(func_name:str, var_dict:dict, functions:dict)->dict:
         #print(f"{k} : {var_dict[k]} : {expr}")
         expr = expr.replace(k, str(var_dict[k]))
         
-    print(f"new expr for {func_name} = {expr}")
+    #print(f"new expr for {func_name} = {expr}")
     var_dict[func_name] = str(eval(expr, {"ceil" : ceil}, var_dict))
     #print(f"var_dict[func_name] = {var_dict[func_name]}")
     var_dict['FUNC_DEF_USED_'+func_name] = database["functions"][func_name]
@@ -146,7 +148,7 @@ def get_job_cost(given_dict: dict, job:str)->tuple[int, dict]:
     computed_variables.update(get_job_constants(job.replace('-','_')))
     check = []
     for func in useable_functions:
-        if 'cost' in func:
+        if 'total_cost' in func:
             check.append(func)
         if func not in computed_variables:
             computed_variables.update(recurse_compute_func(func, computed_variables, useable_functions))
@@ -157,15 +159,18 @@ def get_job_cost(given_dict: dict, job:str)->tuple[int, dict]:
     
 
 def handle_data(given_dict)->str:
-    #I need to know how to handle the boolean values - if they shoudl apply or not in some way and how to identify that
+    #I need to know how to handle the boolean values - if they should apply or not in some way and how to identify that
     sanit = sanitize(given_dict)
     personal_data, sanit = get_personal_data(sanit)
     cat = categorize(sanit)
     #Can easily and safely work with these now
     result = deepcopy(cat)
     running_total = 0
+    #print(cat)
     for job in cat:
+        #print(f"Job {job}")
         for subjob in cat[job]:
+            #print(f"SubJob {subjob}")
             #Should handle decimals better here
             subtotal, result_vars = get_job_cost(cat[job][subjob], job)
             result[job][subjob]['result_vars'] = result_vars
@@ -176,7 +181,8 @@ def handle_data(given_dict)->str:
     print(f"FINAL DICT - {result}")
     client_obj = client(**personal_data)
     add_job(result, client_obj)
-    #Need to make client object 
+    #Need to make client object
+    return result 
 
 
 @app.route('/concretefoundation')
@@ -207,7 +213,7 @@ def step_one():
         # Each category won't neccessarily start at 1
         data = request.form
         response = handle_data(data)
-        return data
+        return response
 
 
 def send_email(details, subject, to):
